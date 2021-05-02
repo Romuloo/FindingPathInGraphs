@@ -1,6 +1,9 @@
 import domain.Graph;
 import org.junit.Test;
 import org.junit.Before;
+
+import java.util.Set;
+
 import static org.junit.Assert.*;
 
 
@@ -16,6 +19,12 @@ public class GraphTest {
     public void setUp(){
 
         grafo = new Graph();
+        grafo.addVertex(1);
+        grafo.addVertex(2);
+        grafo.addVertex(3);
+
+        grafo.addEdge(1, 2);
+
 
     }
 
@@ -24,9 +33,15 @@ public class GraphTest {
      */
     @Test
     public void verticeAnnadidoCorrectamente(){
-        grafo.addVertex(1);
-
         assertTrue(grafo.containsVertex(1));
+    }
+
+    /**
+     * Este test comprueba si se ha annadido v2 correctamente a la lista de adyacentes de v1
+     */
+    @Test
+    public void arcoAnnadidoCorrectamente(){
+        assertTrue(grafo.obtainAdjacents(1).contains(2));
     }
 
 
