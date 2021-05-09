@@ -44,5 +44,27 @@ public class GraphTest {
         assertTrue(grafo.obtainAdjacents(1).contains(2));
     }
 
+    /**
+     * Este test comprueba que si, al annadir un arco entre dos vértices y uno de estos no existe,
+     * se annade.
+     */
+    @Test
+    public void verticeAnnadidoAlAnnadirArco(){
+        grafo.addEdge(1, 4);
+
+        assertTrue(grafo.containsVertex(1) && grafo.containsVertex(4));
+    }
+
+    /**
+     * Este test comprueba que, si el vértice del cual estamos buscando
+     * su conjunto de adyacentes no existe, tira una excepción.
+     * Este test tiene el código mínimo para tirar dicha excepción.
+     */
+    @Test (expected =  NullPointerException.class)
+    public void obtainAdjacentsTiraExcepcion(){
+        grafo.obtainAdjacents(5);
+    }
+
+
 
 }

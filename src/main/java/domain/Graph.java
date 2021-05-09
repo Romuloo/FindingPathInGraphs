@@ -17,7 +17,6 @@ private Map<V, Set<V>> adjacencyList = new HashMap<V, Set<V>>();
 public void addVertex(V v) {
     Set<V> adyacentes = new TreeSet<V>();
    adjacencyList.put(v, adyacentes);
-
 }
 
 /**
@@ -30,29 +29,10 @@ public void addVertex(V v) {
  * contrario.
  */
 
-    /**
-     *Explicacion:
-     * Al acceder a adjacencyList.get(v1) estamos obteniendo un conjunto(Set) que es
-     * la lista de adyacentes donde queremos annadir v2.
-     *
-     * Para trabajar con este conjunto (para annadir v2 a ese conjunto) tenemos dos opcions:
-     *
-     * 1.- Crear un Set pero en vez de hacer "=new Tree<>();" hacemos un "=adjacencyList.get(v1)".
-     *  ¿Por qué? Porque "=new Tree<>();" crea un conjunto nuevo cada vez que se llama al metodo.
-     *  En cambio, con "=adjacencyList.get(v1)" siempre nos vamos a refereir al conjunto YA existente
-     *  que es el valor de la clave v1.
-     *
-     *  2.- Ya que "=adjacencyList.get(v1)" es un conjunto, en vez de hacer el paso medio de crear un conjunto
-     *  con este, lo tratamos como si fuera ya un conjunto.
-     *
-     *  Como resultado, hemos annadido v2 a la lista de adyacentes de v1, es decir, v1 tiene un
-     *  arco apuntando a v2.
-     *
-     *  PD:  como annadir a un conjunto es un metodo booleano porque annadir a un conjunto primero requiere
-     *  comprobar si está el elemento, devolvemos directamente la operación.
-     */
-    public boolean addEdge(V v1, V v2) {
-    return adjacencyList.get(v1).add(v2);
+public boolean addEdge(V v1, V v2) {
+    if(!this.containsVertex(v1)) this.addVertex(v1);
+    if(!this.containsVertex(v2)) this.addVertex(v2);
+    return adjacencyList.get(v1).add(v2); // ahora el valor de V1 == un conjunto con los actuales hijos de v1
 }
 
 
@@ -62,7 +42,8 @@ public void addVertex(V v) {
  * @param v vértice del que se obtienen los adyacentes.
  * @return conjunto de vértices adyacentes.
  */
-public Set<V> obtainAdjacents(V v) /*throws Exception*/ {
+public Set<V> obtainAdjacents(V v){
+   if(!this.containsVertex(v)) throw new NullPointerException("No existe el vértice " + v + ".");
     return adjacencyList.get(v);
 }
 
