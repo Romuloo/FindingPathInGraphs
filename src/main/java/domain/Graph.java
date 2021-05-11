@@ -1,6 +1,23 @@
+/**
+ Copyright [2021] [Javier Linares Castrillón]
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ http://www.apache.org/licenses/LICENSE-2.0
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
 package domain;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * @author Javier Linares Castrillón
+ */
 
 public class Graph<V> {
 
@@ -77,7 +94,45 @@ public String toString() {
  * pasando por arcos del grafo.
  */
 public List<V> onePath(V v1, V v2) {
-        return null;
+
+    boolean encontrado = false;
+    Map<V, V> traza = new HashMap();
+    Stack<V> abierta = new Stack<>();
+    List<V> secuencia = new LinkedList<>();
+
+    traza.put(v1, null);
+    abierta.push(v1);
+
+        do{
+            V vx = abierta.pop();
+
+            if(vx == v2)
+                encontrado = true;
+            else
+                for(V v : adjacencyList.get(vx)){
+                    abierta.push(v);                    // Annado cada vértice a la pila.
+                    traza.put(v, vx);                   //Annado cada vertice hijo al mapa, donde la clave es el vertice y su valor el padre
+                }
+
+        } while(!abierta.isEmpty() & !encontrado);
+
+        if(encontrado){
+
+            V vFinal = v2;
+
+            while(vFinal != v1){
+                   secuencia.add(vFinal);
+                   vFinal = traza.get(vFinal);
+            }
+            secuencia.add(v1);
+
+            // Tengo que trasponer el array. A cada posición v del array le hago corresponer el valor del elemento de la posición Length - posición del elemento.
+            // De  esta forma, un elemento que estaría en la posición 1 en un array de 4 elementos pasa a estar en [4 - 1 = 3].
+            // Esto lo collecto todo en una lista.
+            return secuencia.stream().map(v -> secuencia.get((secuencia.size() - 1) - secuencia.indexOf(v))).collect(Collectors.toList());
+        }
+
+    return null;
     }
 
 }
