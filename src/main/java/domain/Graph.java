@@ -81,8 +81,11 @@ public boolean containsVertex(V v) {
  */
 @Override
 public String toString() {
-        return ""; //Este código hay que modificarlo.
-        }
+    StringBuilder sb = new StringBuilder();
+    for(V v : adjacencyList.keySet())
+        sb.append( v + "=" + adjacencyList.get(v) + ", ");
+    return "Grafo: [ " + sb.toString() + "]";
+}
 
 /**
  * Obtiene, en caso de que exista, un camino entre ‘v1‘ y ‘v2 ‘. En
@@ -96,43 +99,41 @@ public String toString() {
 public List<V> onePath(V v1, V v2) {
 
     boolean encontrado = false;
-    Map<V, V> traza = new HashMap();
+    Map<V, V> traza = new HashMap<>();
     Stack<V> abierta = new Stack<>();
     List<V> secuencia = new LinkedList<>();
 
-    traza.put(v1, null);
     abierta.push(v1);
+    traza.put(v1, null);
 
-        do{
-            V vx = abierta.pop();
+    do{
+        V vx = abierta.pop();
+        if(vx == v2)
+            encontrado = true;
+        else
+            for(V v : adjacencyList.get(vx)) {
+                abierta.push(v);
+                traza.put(v, vx);
+             }
+    } while(!abierta.isEmpty() && !encontrado);
 
-            if(vx == v2)
-                encontrado = true;
-            else
-                for(V v : adjacencyList.get(vx)){
-                    abierta.push(v);                    // Annado cada vértice a la pila.
-                    traza.put(v, vx);                   //Annado cada vertice hijo al mapa, donde la clave es el vertice y su valor el padre
-                }
+    if(encontrado){
 
-        } while(!abierta.isEmpty() & !encontrado);
+        V vFinal = v2;
 
-        if(encontrado){
-
-            V vFinal = v2;
-
-            while(vFinal != v1){
-                   secuencia.add(vFinal);
-                   vFinal = traza.get(vFinal);
-            }
-            secuencia.add(v1);
-
-            // Tengo que trasponer el array. A cada posición v del array le hago corresponer el valor del elemento de la posición Length - posición del elemento.
-            // De  esta forma, un elemento que estaría en la posición 1 en un array de 4 elementos pasa a estar en [4 - 1 = 3].
-            // Esto lo collecto todo en una lista.
-            return secuencia.stream().map(v -> secuencia.get((secuencia.size() - 1) - secuencia.indexOf(v))).collect(Collectors.toList());
+        while(vFinal != v1){
+            secuencia.add(vFinal);
+            vFinal = traza.get(vFinal);
         }
+        secuencia.add(v1);
 
+        // Tengo que trasponer el array. A cada posición v del array le hago corresponer el valor del elemento de la posición Length - posición del elemento.
+        // De  esta forma, un elemento que estaría en la posición 1 en un array de 4 elementos pasa a estar en [4 - 1 = 3].
+        // Esto lo collecto todo en una lista.
+        return secuencia.stream().map(v -> secuencia.get((secuencia.size() - 1) - secuencia.indexOf(v))).collect(Collectors.toList());
+    }
     return null;
     }
-
+    
 }
+
