@@ -67,6 +67,39 @@ public class GraphTest {
     }
 
     /**
+     * Este test comprueba si AddVertex annade más de un elemento.
+     */
+    @Test
+    public void verticesAnnadidosCorrectamente(){
+        Graph<Integer> gTest = new Graph<>();
+        gTest.addVertex(4);
+        gTest.addVertex(5);
+        gTest.addVertex(6);
+
+        assertTrue(gTest.containsVertex(4) && gTest.containsVertex(5) && gTest.containsVertex(6));
+    }
+
+    /**
+     * Test si no está el elemento Add Vertex devuelve true y lo annade.
+     */
+    @Test
+    public void addVertexDevuelveTrue(){
+        Graph<Integer> gTest = new Graph<>();
+        assertTrue(gTest.addVertex(4) && gTest.containsVertex(4));
+    }
+
+    /**
+     * Este test comprueba si un elemento ya ha sido annadido, add Vertex devuelve false;
+     */
+    @Test
+    public void addVertexDevuelveFalse(){
+        Graph<Integer> gTest = new Graph<>();
+        gTest.addVertex(7);
+        assertFalse(gTest.addVertex(7));
+    }
+
+
+    /**
      * Este test comprueba si se ha annadido v2 correctamente a la lista de adyacentes de v1
      */
     @Test
@@ -81,7 +114,6 @@ public class GraphTest {
     @Test
     public void verticeAnnadidoAlAnnadirArco(){
         grafo.addEdge(1, 4);
-
         assertTrue(grafo.containsVertex(1) && grafo.containsVertex(4));
     }
 
@@ -97,6 +129,18 @@ public class GraphTest {
 
 
     /**
+     * Test One path de v1 a v1, el camino es v1;
+     */
+    @Test
+    public void onePathDeUnVerticeAlMismoVertice(){
+        Graph<Integer> gTest = new Graph<>();
+        gTest.addVertex(1);
+        List<Integer> lista = new LinkedList<>();
+        lista.add(1);
+        assertEquals(lista, gTest.onePath(1,1));
+    }
+
+    /**
      * Este test comprueba que el método ‘onePath(V v1, V v2)‘ * encuentra un camino entre ‘v1‘ y ‘v2‘ cuando existe.
      */
     @Test
@@ -105,6 +149,9 @@ public class GraphTest {
         assertEquals(expectedPath, g.onePath(1, 4));
     }
 
+    /**
+     * Este test comprueba que, si un vertice no existe, el path sea null
+     */
     @Test
     public void onePathNull(){
         assertEquals(grafo.onePath(1, 5), null);

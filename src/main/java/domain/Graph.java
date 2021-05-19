@@ -31,9 +31,13 @@ private Map<V, Set<V>> adjacencyList = new HashMap<V, Set<V>>();
  * @param v vértice a añadir.
  * @return ‘true‘ si no estaba anteriormente y ‘false‘ en caso contrario.
  */
-public void addVertex(V v) {
-    Set<V> adyacentes = new TreeSet<V>();
-   adjacencyList.put(v, adyacentes);
+public boolean addVertex(V v) {
+    if(containsVertex(v)) return false;
+    else {
+        Set<V> adyacentes = new TreeSet<V>();
+        adjacencyList.put(v, adyacentes);
+        return true;
+    }
 }
 
 /**
@@ -81,10 +85,7 @@ public boolean containsVertex(V v) {
  */
 @Override
 public String toString() {
-    StringBuilder sb = new StringBuilder();
-    for(V v : adjacencyList.keySet())
-        sb.append( v + "=" + adjacencyList.get(v) + ", ");
-    return "Grafo: [ " + sb.toString() + "]";
+   return adjacencyList.toString();
 }
 
 /**
